@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gemini Context Actions – Chrome Extension</title>
+  <meta name="description" content="A modern Chrome extension that adds Leo‑style context‑menu actions powered by Google Gemini: Ask a question, Translate, Highlight, Rewrite, and more." />
+  <meta name="theme-color" content="#0ea5e9" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Gemini Context Actions – Chrome Extension" />
+  <meta property="og:description" content="Right‑click superpowers for selected text: Ask, Translate, Highlight, and more – powered by Google Gemini." />
+  <meta property="og:image" content="/assets/social-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="/assets/social-card.png" />
+  <link rel="icon" href="/icons/icon32.png" sizes="32x32" />
+  <link rel="icon" href="/icons/icon128.png" sizes="128x128" />
+  <link rel="apple-touch-icon" href="/icons/icon128.png" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef9ff', 100: '#d6f0ff', 200: '#b1e3ff', 300: '#7fd0ff', 400: '#39b2ff',
+              500: '#0ea5e9', 600: '#0780c7', 700: '#0b5f97', 800: '#0e4872', 900: '#0e395a',
+            }
+          },
+          boxShadow: {
+            soft: '0 10px 30px -10px rgba(2, 12, 27, 0.25)'
+          },
+          maxWidth: { '8xl': '90rem' }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Subtle grid background */
+    .bg-grid { background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,.08) 1px, transparent 0); background-size: 22px 22px; }
+    .dark .bg-grid { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.06) 1px, transparent 0); }
+    .glass { backdrop-filter: saturate(140%) blur(6px); background: linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,.55)); }
+    .dark .glass { background: linear-gradient(180deg, rgba(17,24,39,.6), rgba(17,24,39,.5)); }
+  </style>
+</head>
+<body class="antialiased text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-950">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 border-b border-slate-200/70 dark:border-white/10 backdrop-blur bg-white/70 dark:bg-slate-950/60">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2 font-semibold">
+        <!-- App mark (inline SVG) -->
+        <svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true" class="-mt-0.5">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#1890ff"/>
+              <stop offset="100%" stop-color="#b197ff"/>
+            </linearGradient>
+          </defs>
+          <path d="M32 0C30 18 18 30 0 32c18 2 30 14 32 32c2-18 14-30 32-32C46 30 34 18 32 0z" fill="url(#g)"/>
+        </svg>
+        <span>Gemini Context Actions</span>
+      </a>
+      <nav class="hidden sm:flex items-center gap-6 text-sm">
+        <a href="#features" class="hover:text-brand-500">Features</a>
+        <a href="#screens" class="hover:text-brand-500">Screenshots</a>
+        <a href="#install" class="hover:text-brand-500">Install</a>
+        <a href="#faq" class="hover:text-brand-500">FAQ</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button id="themeToggle" class="rounded-xl px-3 py-2 text-sm border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10" aria-label="Toggle theme">☾</button>
+        <a id="ghBtn" href="https://github.com/justvicthor/gemini-context-actions" target="_blank" rel="noreferrer" class="hidden sm:inline-block rounded-xl px-4 py-2 text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-white/90">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative isolate overflow-hidden">
+    <div class="absolute inset-0 -z-10 bg-grid"></div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-16">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight">
+            Right‑click superpowers for selected text ✨
+          </h1>
+          <p class="mt-5 text-lg text-slate-600 dark:text-slate-400 max-w-prose">
+            Ask questions, translate, highlight, rewrite, change tone & length — all from the context menu. Powered by <span class="font-semibold text-slate-800 dark:text-slate-100">Google Gemini</span>.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#install" class="rounded-2xl px-5 py-3 text-white bg-brand-500 hover:bg-brand-600 shadow-soft">Install now</a>
+            <a href="https://github.com/justvicthor/gemini-context-actions/archive/refs/heads/main.zip" class="rounded-2xl px-5 py-3 border border-slate-300 dark:border-white/15 hover:bg-slate-50 dark:hover:bg-white/10">Download ZIP</a>
+          </div>
+          <div class="mt-6 text-sm text-slate-500 dark:text-slate-400">
+            Free & open‑source • Works on Chromium‑based browsers • No analytics
+          </div>
+        </div>
+        <div class="relative">
+          <div class="glass rounded-3xl shadow-soft p-2 ring-1 ring-slate-200/70 dark:ring-white/10">
+            <img src="/assets/ask_a_question.gif" alt="Ask a question demo" class="rounded-2xl w-full" loading="eager" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="py-16 bg-slate-50/70 dark:bg-white/5">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl md:text-3xl font-bold">What you can do</h2>
+      <p class="mt-3 text-slate-600 dark:text-slate-400 max-w-prose">Modeled after Leo‑style actions, but faster and private. Your API key is stored with Chrome and requests are made in the background service worker.</p>
+
+      <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <article class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <div class="text-2xl">❓</div>
+          <h3 class="mt-3 font-semibold">Ask a question</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Use the selected passage as context and let Gemini answer naturally.</p>
+        </article>
+        <!-- Card 2 -->
+        <article class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <div class="text-2xl">🌍</div>
+          <h3 class="mt-3 font-semibold">Translate</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">One‑click translation to English, French, German, Italian, and Spanish.</p>
+        </article>
+        <!-- Card 3 -->
+        <article class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <div class="text-2xl">🖍️</div>
+          <h3 class="mt-3 font-semibold">Highlight (persistent)</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Color‑code passages. Highlights survive refresh and can be removed with an inline “×”.</p>
+        </article>
+        <!-- Card 4 -->
+        <article class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <div class="text-2xl">⚡</div>
+          <h3 class="mt-3 font-semibold">Quick actions</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Summarize or Explain — perfect for scanning long pages quickly.</p>
+        </article>
+        <!-- Card 5 -->
+        <article class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <div class="text-2xl">✍️</div>
+          <h3 class="mt-3 font-semibold">Rewrite & Tone</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Paraphrase or Improve; switch tone to Academic, Professional, Persuasive, Casual, or Funny.</p>
+        </article>
+        <!-- Card 6 -->
+        <article class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <div class="text-2xl">📏</div>
+          <h3 class="mt-3 font-semibold">Change length</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Shorten or expand writing while staying true to the original meaning.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screenshots -->
+  <section id="screens" class="py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl md:text-3xl font-bold">Screenshots</h2>
+      <p class="mt-3 text-slate-600 dark:text-slate-400">A peek at the UX. All actions appear from the right‑click menu.</p>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <figure class="glass rounded-2xl p-2 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <img src="/assets/ask_a_question.gif" alt="Ask a question" class="rounded-xl w-full" />
+          <figcaption class="px-2 py-3 text-sm text-slate-600 dark:text-slate-400">Ask a question</figcaption>
+        </figure>
+        <figure class="glass rounded-2xl p-2 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <img src="/assets/highlight.gif" alt="Highlight" class="rounded-xl w-full" />
+          <figcaption class="px-2 py-3 text-sm text-slate-600 dark:text-slate-400">Highlight (persistent)</figcaption>
+        </figure>
+        <figure class="glass rounded-2xl p-2 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <img src="/assets/translate.gif" alt="Translate" class="rounded-xl w-full" />
+          <figcaption class="px-2 py-3 text-sm text-slate-600 dark:text-slate-400">Translate</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install -->
+  <section id="install" class="py-16 bg-slate-50/70 dark:bg-white/5">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl md:text-3xl font-bold">Install</h2>
+      <div class="mt-6 grid lg:grid-cols-2 gap-8 items-start">
+        <div class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <h3 class="font-semibold">1) Download</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Get the source code:</p>
+          <div class="mt-4 flex flex-wrap gap-3">
+            <a href="https://github.com/justvicthor/gemini-context-actions" target="_blank" class="rounded-xl px-4 py-2 bg-slate-900 text-white dark:bg-white dark:text-slate-900">Open GitHub</a>
+            <a href="https://github.com/justvicthor/gemini-context-actions/archive/refs/heads/main.zip" class="rounded-xl px-4 py-2 border border-slate-300 dark:border-white/15">Download ZIP</a>
+          </div>
+          <p class="mt-4 text-xs text-slate-500 dark:text-slate-400">Tip: prefer a tagged release ZIP when available.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <h3 class="font-semibold">2) Load unpacked</h3>
+          <ol class="mt-3 space-y-2 text-sm list-decimal list-inside text-slate-700 dark:text-slate-300">
+            <li>Open <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-white/10">chrome://extensions</code></li>
+            <li>Enable <strong>Developer mode</strong></li>
+            <li>Click <strong>Load unpacked</strong> and select the project folder</li>
+            <li>Open the extension <strong>Options</strong> and paste your Gemini API key</li>
+            <li>Right‑click any selection and try <em>Ask a question</em> 🚀</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="mt-8 text-sm text-slate-600 dark:text-slate-400">
+        Chrome Web Store listing is planned. For now, installation is from source.
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl md:text-3xl font-bold">FAQ</h2>
+      <div class="mt-6 grid md:grid-cols-2 gap-6">
+        <details class="glass rounded-2xl p-5 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10" open>
+          <summary class="font-medium cursor-pointer">How is my API key stored?</summary>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Your key is saved in <code>chrome.storage.sync</code> and used only by the background service worker to call Google’s Generative Language API over HTTPS. It is never injected into pages.</p>
+        </details>
+        <details class="glass rounded-2xl p-5 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <summary class="font-medium cursor-pointer">Does highlight persist across refresh?</summary>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Yes. We anchor highlights by quote + context and restore them on reload. Remove any highlight with the inline “×”.</p>
+        </details>
+        <details class="glass rounded-2xl p-5 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <summary class="font-medium cursor-pointer">Which models work?</summary>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Defaults to <code>gemini-2.5-flash-lite</code> on the v1 API. You can change the model in <code>background.js</code>.</p>
+        </details>
+        <details class="glass rounded-2xl p-5 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
+          <summary class="font-medium cursor-pointer">Is it open source?</summary>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Yes — MIT licensed. Star the repo and file issues or PRs on GitHub!</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200/70 dark:border-white/10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-slate-500 dark:text-slate-400">© 2025 Vittorio Pio Remigio Cozzoli. MIT License.</p>
+      <div class="flex items-center gap-3 text-sm">
+        <a href="https://github.com/justvicthor/gemini-context-actions" class="hover:text-brand-500">GitHub</a>
+        <span class="opacity-40">•</span>
+        <a href="#install" class="hover:text-brand-500">Install</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Dark mode toggle – remembers preference
+    const key = 'gca-theme';
+    const setTheme = (val) => {
+      if (val === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+      localStorage.setItem(key, val);
+    };
+    const stored = localStorage.getItem(key);
+    if (!stored) {
+      // initialize with system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(prefersDark ? 'dark' : 'light');
+    } else setTheme(stored);
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+      setTheme(next);
+    });
+  </script>
+</body>
+</html>
