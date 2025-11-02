@@ -3,17 +3,40 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Gemini Context Actions – Chrome Extension</title>
-  <meta name="description" content="A modern Chrome extension that adds Leo‑style context‑menu actions powered by Google Gemini: Ask a question, Translate, Highlight, Rewrite, and more." />
+  <meta name="title" content="Gemini Context Actions – Chrome Extension" />
+  <meta name="description" content="A modern Chrome extension that adds Leo-style context-menu actions powered by Google Gemini: Ask a question, Translate, Highlight, Rewrite, and more." />
+
+  <!-- Help crawlers (and dedupe URLs) -->
+  <link rel="canonical" href="https://gemini-context-actions-site.pages.dev/" />
+  <meta name="robots" content="index,follow" />
+
+  <!-- Theme colors -->
   <meta name="theme-color" content="#0ea5e9" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
-  <!-- Open Graph / Twitter -->
+
+  <!-- Open Graph -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Gemini Context Actions" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:title" content="Gemini Context Actions – Chrome Extension" />
-  <meta property="og:description" content="Right‑click superpowers for selected text: Ask, Translate, Highlight, and more – powered by Google Gemini." />
-  <meta property="og:image" content="/assets/social-card.png" />
+  <meta property="og:description" content="Right-click superpowers for selected text: Ask, Translate, Highlight, and more – powered by Google Gemini." />
+  <meta property="og:url" content="https://gemini-context-actions-site.pages.dev/" />
+  <!-- Use ABSOLUTE URL for the image -->
+  <meta property="og:image" content="https://gemini-context-actions-site.pages.dev/assets/social-card.png" />
+  <meta property="og:image:secure_url" content="https://gemini-context-actions-site.pages.dev/assets/social-card.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Gemini Context Actions – right-click actions preview" />
+
+  <!-- Twitter (X) -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="/assets/social-card.png" />
+  <meta name="twitter:title" content="Gemini Context Actions – Chrome Extension" />
+  <meta name="twitter:description" content="Right-click superpowers for selected text: Ask, Translate, Highlight, and more – powered by Google Gemini." />
+  <meta name="twitter:image" content="https://gemini-context-actions-site.pages.dev/assets/social-card.png" />
+
   <link rel="icon" href="/icons/icon32.png" sizes="32x32" />
   <link rel="icon" href="/icons/icon128.png" sizes="128x128" />
   <link rel="apple-touch-icon" href="/icons/icon128.png" />
@@ -43,9 +66,7 @@
               500: '#0ea5e9', 600: '#0780c7', 700: '#0b5f97', 800: '#0e4872', 900: '#0e395a',
             }
           },
-          boxShadow: {
-            soft: '0 10px 30px -10px rgba(2, 12, 27, 0.25)'
-          },
+          boxShadow: { soft: '0 10px 30px -10px rgba(2, 12, 27, 0.25)' },
           maxWidth: { '8xl': '90rem' }
         }
       }
@@ -96,7 +117,7 @@
       <div class="grid lg:grid-cols-2 gap-10 items-center">
         <div>
           <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight">
-            Right‑click superpowers for selected text ✨
+            Right-click superpowers for selected text ✨
           </h1>
           <p class="mt-5 text-lg text-slate-600 dark:text-slate-400 max-w-prose">
             Ask questions, translate, highlight, rewrite, change tone & length: all from the context menu.<br>
@@ -107,7 +128,7 @@
             <a href="https://github.com/justvicthor/gemini-context-actions/releases/download/v1.0.1/GCA-ver1.0.1.zip" class="rounded-2xl px-5 py-3 border border-slate-300 dark:border-white/15 hover:bg-slate-50 dark:hover:bg-white/10">Download ZIP</a>
           </div>
           <div class="mt-6 text-sm text-slate-500 dark:text-slate-400">
-            Free & open‑source • Works on Chromium‑based browsers • No analytics
+            Free & open-source • Works on Chromium-based browsers • No analytics
           </div>
         </div>
         <div class="relative">
@@ -123,7 +144,7 @@
   <section id="features" class="py-16 bg-slate-50/70 dark:bg-white/5">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-2xl md:text-3xl font-bold">What you can do</h2>
-      <p class="mt-3 text-slate-600 dark:text-slate-400 max-w-prose">Modeled after Leo‑style actions, but faster and private. Your API key is stored with Chrome and requests are made in the background service worker.</p>
+      <p class="mt-3 text-slate-600 dark:text-slate-400 max-w-prose">Modeled after Leo-style actions, but faster and private. Your API key is stored with Chrome and requests are made in the background service worker.</p>
 
       <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Card 1 -->
@@ -136,13 +157,13 @@
         <article class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
           <div class="text-2xl">🌍</div>
           <h3 class="mt-3 font-semibold">Translate</h3>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">One‑click translation to English, French, German, Italian, and Spanish.</p>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">One-click translation to English, French, German, Italian, and Spanish.</p>
         </article>
         <!-- Card 3 -->
         <article class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
           <div class="text-2xl">🖍️</div>
           <h3 class="mt-3 font-semibold">Highlight (persistent)</h3>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Color‑code passages. Highlights survive refresh and can be removed with an inline “×”.</p>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Color-code passages. Highlights survive refresh and can be removed with an inline “×”.</p>
         </article>
         <!-- Card 4 -->
         <article class="glass rounded-2xl p-6 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
@@ -170,7 +191,7 @@
   <section id="screens" class="py-16">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-2xl md:text-3xl font-bold">Screenshots</h2>
-      <p class="mt-3 text-slate-600 dark:text-slate-400">A peek at the UX. All actions appear from the right‑click menu.</p>
+      <p class="mt-3 text-slate-600 dark:text-slate-400">A peek at the UX. All actions appear from the right-click menu.</p>
       <div class="mt-8 grid gap-6 md:grid-cols-3">
         <figure class="glass rounded-2xl p-2 shadow-soft ring-1 ring-slate-200/70 dark:ring-white/10">
           <img src="/assets/ask_a_question.gif" alt="Ask a question" class="rounded-xl w-full" />
@@ -209,7 +230,7 @@
             <li>Enable <strong>Developer mode</strong></li>
             <li>Click <strong>Load unpacked</strong> and select the project folder</li>
             <li>Open the extension <strong>Options</strong> and paste your Gemini API key</li>
-            <li>Right‑click any selection and try <em>Ask a question</em> 🚀</li>
+            <li>Right-click any selection and try <em>Ask a question</em> 🚀</li>
           </ol>
         </div>
       </div>
@@ -267,7 +288,6 @@
     };
     const stored = localStorage.getItem(key);
     if (!stored) {
-      // initialize with system preference
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setTheme(prefersDark ? 'dark' : 'light');
     } else setTheme(stored);
