@@ -18,10 +18,23 @@
   <link rel="icon" href="/icons/icon128.png" sizes="128x128" />
   <link rel="apple-touch-icon" href="/icons/icon128.png" />
 
+  <!-- Prevent flash of incorrect theme (runs before paint) -->
+  <script>(function(){
+    try {
+      var key = 'gca-theme';
+      var stored = localStorage.getItem(key);
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if ((stored && stored === 'dark') || (!stored && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (_) {}
+  })();</script>
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -86,7 +99,8 @@
             Right‑click superpowers for selected text ✨
           </h1>
           <p class="mt-5 text-lg text-slate-600 dark:text-slate-400 max-w-prose">
-            Ask questions, translate, highlight, rewrite, change tone & length — all from the context menu. Powered by <span class="font-semibold text-slate-800 dark:text-slate-100">Google Gemini</span>.
+            Ask questions, translate, highlight, rewrite, change tone & length: all from the context menu.<br>
+            Powered by <span class="font-semibold text-slate-800 dark:text-slate-100">Google Gemini</span>.
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
             <a href="#install" class="rounded-2xl px-5 py-3 text-white bg-brand-500 hover:bg-brand-600 shadow-soft">Install now</a>
