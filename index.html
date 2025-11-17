@@ -140,8 +140,10 @@
               loop
               playsinline
               class="rounded-2xl w-full"
+              data-src-light="/assets/new-ask-a-question.mp4"
+              data-src-dark="/assets/new-ask-a-question-dark.mp4"
+              src="/assets/new-ask-a-question.mp4"
             >
-              <source src="/assets/new-ask-a-question.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
@@ -210,8 +212,10 @@
             loop
             playsinline
             class="rounded-xl w-full"
+            data-src-light="/assets/new-ask-a-question.mp4"
+            data-src-dark="/assets/new-ask-a-question-dark.mp4"
+            src="/assets/new-ask-a-question.mp4"
           >
-            <source src="/assets/new-ask-a-question.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <figcaption class="px-2 py-3 text-sm text-slate-600 dark:text-slate-400">Ask a question</figcaption>
@@ -223,8 +227,10 @@
             loop
             playsinline
             class="rounded-xl w-full"
+            data-src-light="/assets/new-yellow-highlight.mp4"
+            data-src-dark="/assets/new-yellow-highlight-dark.mp4"
+            src="/assets/new-yellow-highlight.mp4"
           >
-            <source src="/assets/new-yellow-highlight.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <figcaption class="px-2 py-3 text-sm text-slate-600 dark:text-slate-400">Highlight</figcaption>
@@ -236,8 +242,10 @@
             loop
             playsinline
             class="rounded-xl w-full"
+            data-src-light="/assets/new-translate-italian.mp4"
+            data-src-dark="/assets/new-translate-italian-dark.mp4"
+            src="/assets/new-translate-italian.mp4"
           >
-            <source src="/assets/new-translate-italian.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <figcaption class="px-2 py-3 text-sm text-slate-600 dark:text-slate-400">Translate</figcaption>
@@ -247,7 +255,7 @@
   </section>
 
   <!-- Install -->
-  <section id="install" class="py-16 bg-slate-50/70 dark:bg-white/5">
+  <section id="install" class="py-16 bg-slate-50/70 dark:bg:white/5 dark:bg-white/5">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-2xl md:text-3xl font-bold">Install</h2>
       <div class="mt-6 grid lg:grid-cols-2 gap-8 items-start">
@@ -316,18 +324,40 @@
   </footer>
 
   <script>
-    // Dark mode toggle – remembers preference
     const key = 'gca-theme';
-    const setTheme = (val) => {
-      if (val === 'dark') document.documentElement.classList.add('dark');
-      else document.documentElement.classList.remove('dark');
-      localStorage.setItem(key, val);
+
+    const applyVideoTheme = (theme) => {
+      const isDark = theme === 'dark';
+      const videos = document.querySelectorAll('video[data-src-light][data-src-dark]');
+      videos.forEach((video) => {
+        const targetSrc = isDark ? video.dataset.srcDark : video.dataset.srcLight;
+        if (video.getAttribute('src') !== targetSrc) {
+          video.setAttribute('src', targetSrc);
+          // reload and try to keep autoplay behaviour
+          video.load();
+          video.play().catch(() => {});
+        }
+      });
     };
+
+    const setTheme = (val) => {
+      if (val === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      localStorage.setItem(key, val);
+      applyVideoTheme(val);
+    };
+
     const stored = localStorage.getItem(key);
     if (!stored) {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       setTheme(prefersDark ? 'dark' : 'light');
-    } else setTheme(stored);
+    } else {
+      setTheme(stored);
+    }
+
     document.getElementById('themeToggle').addEventListener('click', () => {
       const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
       setTheme(next);
